@@ -1,15 +1,15 @@
 """
 https://leetcode.com/problems/maximum-subarray/
 """
+import math
 import unittest
 from typing import List
 
 
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
-        max_sum = prev_sum = nums[0]
-        for i in range(1, len(nums)):
-            n = nums[i]
+        max_sum, prev_sum = -math.inf, 0
+        for n in nums:
             prev_sum = max(n, prev_sum + n)
             max_sum = max(max_sum, prev_sum)
         return max_sum
