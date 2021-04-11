@@ -1,7 +1,5 @@
 """
 https://leetcode.com/problems/sqrtx/
-Integer square root problem:
-https://en.wikipedia.org/wiki/Integer_square_root#Using_only_integer_division
 """
 import unittest
 
@@ -20,6 +18,10 @@ class Solution:
 
 
 class BinarySearch1:
+    """
+    https://leetcode.com/problems/sqrtx/discuss/25047/A-Binary-Search-Solution
+    """
+
     def mySqrt(self, x: int) -> int:
         # if x == 0:
         #     return 0
@@ -41,7 +43,6 @@ class BinarySearch2:
     If while, If mid > sqrt(x), right = mid - 1 executed, right pointer shifts left 1, closest to sqrt(x),
     right is also the answer.
     """
-
     def mySqrt(self, x: int) -> int:
         # if x == 0:
         #     return 0
@@ -55,6 +56,22 @@ class BinarySearch2:
             else:
                 right = mid - 1
         return right
+
+
+class NewtonMethod:
+    """
+    https://leetcode.com/problems/sqrtx/discuss/25057/3-4-short-lines-Integer-Newton-Every-Language
+    Explanation:
+    https://leetcode.com/problems/sqrtx/discuss/25057/3-4-short-lines-Integer-Newton-Every-Language/24092
+    Integer square root problem:
+    https://en.wikipedia.org/wiki/Integer_square_root#Using_only_integer_division
+    """
+
+    def mySqrt(self, x: int) -> int:
+        r = x
+        while r * r > x:
+            r = (r + x // r) // 2
+        return r
 
 
 class MyTestCase(unittest.TestCase):
