@@ -7,6 +7,11 @@ from typing import List
 
 
 class Solution:
+    """
+    https://mp.weixin.qq.com/s/nrULqCsRsrPKi3Y-nUfnqg
+    定义 dp 数组的含义：
+    以 nums[i] 为结尾的「最大子数组和」为 dp[i]
+    """
     def maxSubArray(self, nums: List[int]) -> int:
         max_sum, prev_sum = -math.inf, 0
         for n in nums:
