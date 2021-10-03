@@ -9,6 +9,10 @@ class ListNode:
 
 
 class Solution:
+    """
+    用dict保存每个node的prev
+    若curr在dict中已有记录，则说明curr有不同的prev，是为交汇点
+    """
     def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
         currA, currB = headA, headB
         prevA = prevB = 'head'
