@@ -50,6 +50,52 @@ class preorderCodec:
         return root
 
 
+class postorderCodec:
+    def serialize(self, root):
+        """Encodes a tree to a single string.
+        
+        :type root: TreeNode
+        :rtype: str
+        """
+        result = []
+        self.serHelper(root, result)
+        return ','.join(result)
+    
+    def serHelper(self, root: TreeNode, result: list):
+        if not root:
+            result.append('#')
+            return
+        
+        self.serHelper(root.left, result)
+        self.serHelper(root.right, result)
+        result.append(str(root.val))
+
+    def deserialize(self, data):
+        """Decodes your encoded data to tree.
+        
+        :type data: str
+        :rtype: TreeNode
+        """
+        if not data:
+            return
+        nodes = data.split(',')
+        return self.desHelper(nodes)
+    
+    def desHelper(self, nodes: list):
+        if not nodes:
+            return
+        
+        node = nodes.pop()
+        if node == '#':
+            return
+
+        root = TreeNode(int(node))
+        root.right = self.desHelper(nodes)
+        root.left = self.desHelper(nodes)
+
+        return root
+
+
 # Your Codec object will be instantiated and called as such:
 # ser = Codec()
 # deser = Codec()
