@@ -1,6 +1,9 @@
 """
 https://leetcode-cn.com/problems/serialize-and-deserialize-binary-tree/
 """
+from collections import deque
+
+
 # Definition for a binary tree node.
 class TreeNode(object):
     def __init__(self, x):
@@ -93,6 +96,67 @@ class postorderCodec:
         root.right = self.desHelper(nodes)
         root.left = self.desHelper(nodes)
 
+        return root
+
+
+class BFSCodec:
+    def serialize(self, root):
+        """Encodes a tree to a single string.
+        
+        :type root: TreeNode
+        :rtype: str
+        """
+        if not root:
+            return '#'
+        
+        result = []
+        q = deque()
+        q.append(root)
+
+        while q:
+            node = q.popleft()
+            if node:
+                result.append(str(node.val))
+                q.append(node.left)
+                q.append(node.right)
+            else:
+                result.append('#')
+        
+        return ','.join(result)
+
+    def deserialize(self, data):
+        """Decodes your encoded data to tree.
+        
+        :type data: str
+        :rtype: TreeNode
+        """
+        if not data:
+            return
+        
+        nodes = data.split(',')
+        q = deque()
+
+        if nodes[0] == '#':
+            return
+        root = TreeNode(int(nodes[0]))
+        q.append(root)
+
+        i = 0
+        while i < len(nodes) and q:
+            parent = q.popleft()
+
+            i += 1
+            left = nodes[i]
+            if left != '#':
+                parent.left = TreeNode(int(left))
+                q.append(parent.left)
+
+            i += 1
+            right = nodes[i]
+            if right != '#':
+                parent.right = TreeNode(int(right))
+                q.append(parent.right)
+        
         return root
 
 
