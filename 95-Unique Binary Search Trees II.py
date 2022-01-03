@@ -16,6 +16,7 @@ class TreeNode:
 class Solution:
     def __init__(self) -> None:
         self.memo = dict()
+        self.memo[0] = [None]
 
     def generateTrees(self, n: int, offset: int=0) -> List[TreeNode]:
         """
@@ -27,7 +28,8 @@ class Solution:
             if offset == 0:
                 return self.memo[n]
             else:
-                for root in self.memo[n]:
+                result = self.memo[n]
+                for root in result:
                     q = deque()
                     q.append(root)
                     while q:
@@ -36,9 +38,10 @@ class Solution:
                             q.append(node.left)
                             q.append(node.right)
                             node.val += offset
+                return result
         
         if n == 0:
-            return [None]
+            return []
 
         result = []
         for mid in range(1, n + 1):
