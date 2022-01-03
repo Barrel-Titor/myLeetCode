@@ -1,6 +1,7 @@
 """
 https://leetcode-cn.com/problems/unique-binary-search-trees-ii/
 """
+from os import close
 from typing import List
 from collections import deque
 
@@ -22,7 +23,7 @@ class Solution:
         """
         长度为n的数组，所有可能的BST，结构是同构的
         例: [1, 2]和[2, 3]，所有可能的BST，结构完全一致，数字不同
-        参考解法三: https://leetcode-cn.com/problems/unique-binary-search-trees-ii/solution/xiang-xi-tong-su-de-si-lu-fen-xi-duo-jie-fa-by-2-7/
+        failed，输出很诡异
         """
         if self.memo.get(n):
             if offset == 0:
@@ -89,6 +90,41 @@ class labuladongSolution:
                     result.append(root)
 
         return result
+
+
+class dpSolution:
+    def generateTrees(self, n: int) -> List[TreeNode]:
+        """
+        https://leetcode-cn.com/problems/unique-binary-search-trees-ii/solution/xiang-xi-tong-su-de-si-lu-fen-xi-duo-jie-fa-by-2-7/
+        [1, 2]与[99, 100]同构，动态规划解法
+        """
+        dp = [[] for _ in range(n+1)]
+        dp[0] = [None]
+
+        # 长度为 len，从 1 到 n
+        for len in range(1, n + 1):
+            dp[len] = []
+            # 将不同数字作为根节点
+            for mid in range(1, len + 1):
+                left_size = mid - 1
+                right_size = len - mid
+                for left in dp[left_size]:
+                    for right in dp[right_size]:
+                        root = TreeNode(mid)
+                        root.left = left
+                        root.right = self.clone(right, mid)
+                        dp[len].append(root)
+        
+        return dp[n]
+
+    def clone(self, root, offset):
+        if not root:
+            return None
+        
+        node = TreeNode(root.val + offset)
+        node.left = self.clone(root.left, offset)
+        node.right = self.clone(root.right, offset)
+        return node
 
 
 if __name__ == '__main__':
