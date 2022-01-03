@@ -1,7 +1,6 @@
 """
 https://leetcode-cn.com/problems/unique-binary-search-trees-ii/
 """
-from os import close
 from typing import List
 from collections import deque
 
@@ -40,16 +39,13 @@ class Solution:
                             q.append(node.right)
                             node.val += offset
                 return result
-        
-        if n == 0:
-            return []
 
         result = []
         for mid in range(1, n + 1):
             left_trees = self.generateTrees(mid - 1, offset=offset)
             right_trees = self.generateTrees(n - mid, offset=mid + offset)
 
-            root = TreeNode(mid)
+            root = TreeNode(mid + offset)
             for left in left_trees:
                 for right in right_trees:
                     root.left = left
