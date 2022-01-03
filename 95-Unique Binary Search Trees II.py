@@ -58,6 +58,39 @@ class Solution:
         return result
 
 
+class labuladongSolution:
+    def generateTrees(self, n: int) -> List[TreeNode]:
+        """
+        1、穷举 root 节点的所有可能。
+        2、递归构造出左右子树的所有合法 BST。
+        3、给 root 节点穷举所有左右子树的组合。
+        """
+        if n == 0:
+            return []
+        return self.build(1, n)
+    
+    def build(self, lo, hi) -> List[TreeNode]:
+        if lo > hi:
+            return [None]
+        
+        result = []
+        # 1、穷举 root 节点的所有可能。
+        for mid in range(lo, hi + 1):
+            # 2、递归构造出左右子树的所有合法 BST。
+            left_trees = self.build(lo, mid - 1)
+            right_trees = self.build(mid + 1, hi)
+
+            # 3、给 root 节点穷举所有左右子树的组合。
+            for left in left_trees:
+                for right in right_trees:
+                    root = TreeNode(mid)
+                    root.left = left
+                    root.right = right
+                    result.append(root)
+
+        return result
+
+
 if __name__ == '__main__':
     s = Solution()
     print(len(s.generateTrees(0)))
