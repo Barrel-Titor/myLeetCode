@@ -42,3 +42,40 @@ class Solution:
             return self.mergeTwoLists(lists1, lists2)
         else:
             return
+
+
+# https://labuladong.github.io/algo/di-ling-zh-bfe1b/shuang-zhi-0f7cc/#%E5%90%88%E5%B9%B6-k-%E4%B8%AA%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8
+class labuladongSolution:
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        import heapq
+
+        if not lists:
+            return
+        
+        dummy = ListNode()
+        p = dummy
+        pq = []
+
+        # According to the heapq documentation, the way to customize the heap order 
+        # is to have each element on the heap to be a tuple, 
+        # with the first tuple element being one that accepts normal Python comparisons.
+        
+        # The extra index is to avoid clashes when the evaluated key value is a draw 
+        # and the stored value is not directly comparable,
+        # otherwise heapq could fail with TypeError
+        index = 0
+        for head in lists:
+            if head:
+                heapq.heappush(pq, (head.val, index, head))
+                index += 1
+        
+        while pq:
+            node = heapq.heappop(pq)[2]
+            p.next = node
+            if node.next:
+                node = node.next
+                heapq.heappush(pq, (node.val, index, node))
+                index += 1
+            p = p.next
+        
+        return dummy.next
